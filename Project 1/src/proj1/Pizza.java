@@ -2,7 +2,7 @@ package proj1;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
+
 
 public class Pizza implements Comparable<Pizza> {
     public enum CrustType {
@@ -23,6 +23,7 @@ public class Pizza implements Comparable<Pizza> {
 
     private CrustType crust;
     private final ArrayList<String> toppings;
+    // list of valid toppings to prevent user from adding incorrect toppings
     private final List<String> valid_toppings = List.of("cheese", "onion", "green pepper",
             "ham", "pineapple", "pepperoni", "ground beef", "italian sausage", "anchovies");
 
@@ -75,12 +76,12 @@ public class Pizza implements Comparable<Pizza> {
     @Override
     public String toString(){
         if(toppings.isEmpty()){
-            return "This pizza has a " + crust +
-                    "crust and the following toppings:\n" +
+            return "This " + size + " pizza has a " + crust +
+                    " crust and the following toppings:\n" +
                     "none";
         } else {
-            return "This pizza has a " + crust +
-                    "crust and the following toppings:\n" +
+            return "This " + size + " pizza has a " + crust +
+                    " crust and the following toppings:\n" +
                     toppings;
         }
     }
