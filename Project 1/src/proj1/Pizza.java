@@ -2,6 +2,7 @@ package proj1;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Pizza implements Comparable<Pizza> {
     public enum CrustType {
@@ -21,7 +22,7 @@ public class Pizza implements Comparable<Pizza> {
     }
 
     private CrustType crust;
-    private ArrayList<String> toppings;
+    private final ArrayList<String> toppings;
     private final List<String> valid_toppings = List.of("cheese", "onion", "green pepper",
             "ham", "pineapple", "pepperoni", "ground beef", "italian sausage", "anchovies");
 
@@ -33,9 +34,19 @@ public class Pizza implements Comparable<Pizza> {
         this.size = SizeType.SMALL;
     }
 
+    public Pizza(CrustType crust, ArrayList<String> toppings, SizeType size) {
+        this.crust = crust;
+        this.toppings = new ArrayList<>();
+        for (String topping : toppings) {
+            addToppings(topping);
+        }
+        this.size = size;
+    }
+
     public void addToppings(String topping){
-        if(valid_toppings.contains(topping)){
-            toppings.add(topping);
+        // make sure toppings are in lower case otherwise it will give an error
+        if(valid_toppings.contains(topping.toLowerCase())){
+            toppings.add(topping.toLowerCase());
         } else {
             System.out.println("Please choose a valid topping.");
         }
@@ -76,18 +87,24 @@ public class Pizza implements Comparable<Pizza> {
 
     @Override
     public int compareTo(Pizza otherPizza){
+        // compare number of toppings
         int result = Integer.compare(this.toppings.size(), otherPizza.toppings.size());
+        // if number of toppings are equal
         if (result == 0){
-            result = this.crust.compareTo(otherPizza.crust);
+            // ordinal automatically finds the position (index) of the enum constant
+            result = Integer.compare(this.crust.ordinal(), otherPizza.crust.ordinal());
         }
         return result;
     }
 
     @Override
-    public String equals(Pizza otherPizza){
-        if (this.toppings.size() == otherPizza.toppings.size()){
-            return "Pizzas are equal";
-        }
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Pizza otherPizza = (Pizza) obj;
+        // return true if equal or return false if not equal
+        return this.crust == otherPizza.crust &&
+                this.toppings.size() == otherPizza.toppings.size();
     }
 }
 
